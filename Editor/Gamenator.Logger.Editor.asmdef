@@ -1,0 +1,20 @@
+{
+    "name": "Gamenator.Logger.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:16d41718419894ea1bc1fe4c88117a68",
+        "GUID:97d715d6ac0d048a9b5db2191d6bbc3f",
+        "GUID:b8cb9270d0f884f9eb83cf7ad944bdb9"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

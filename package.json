@@ -1,0 +1,29 @@
+{
+  "name": "com.gamenator.game-logger",
+  "displayName": "Unity Game Logger",
+  "version": "1.0.0",
+  "unity": "2021.3",
+  "description": "Lightweight, color-coded, level-based logger for Unity projects.",
+  "author": {
+    "name": "Vitalii Novosad",
+    "url": "https://github.com/v17alya"
+  },
+  "license": "MIT",
+  "dependencies": {
+  },
+  "samples": [
+    {
+      "displayName": "Basic Usage",
+      "description": "Minimal example scene that shows how to call GameLogger.",
+      "path": "Samples~/Basic Usage"
+    }
+  ],
+  "documentationUrl": "https://github.com/v17alya/UnityLogger#readme",
+  "changelogUrl": "https://github.com/v17alya/UnityLogger/blob/main/CHANGELOG.md",
+  "keywords": [
+    "logging",
+    "debug",
+    "console",
+    "unity"
+  ]
+}

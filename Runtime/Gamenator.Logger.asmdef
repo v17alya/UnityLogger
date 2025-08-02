@@ -1,0 +1,16 @@
+{
+    "name": "Gamenator.Logger",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b8cb9270d0f884f9eb83cf7ad944bdb9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
