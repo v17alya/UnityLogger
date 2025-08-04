@@ -4,6 +4,8 @@ namespace Gamenator.Core.Logging
     /// <summary>Runtime filter for <see cref="GameLogger"/>.</summary>
     public enum LogLevel : int
     {
+        /// <summary>Printed even when CurrentLevel == None.</summary>
+        Always = -1,
         /// <summary>All messages are logged.</summary>
         All,
         /// <summary>Information and above.</summary>

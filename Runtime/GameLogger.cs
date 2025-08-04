@@ -31,8 +31,8 @@ namespace Gamenator.Core.Logging
         /// <summary>Always logs, even in <see cref="LogLevel.None"/>.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [HideInCallstack]
-        public static void Fatal(string message, UnityEngine.Object context = null) =>
-            UnityEngine.Debug.LogError(Format(message, LogLevel.Exception), context);
+        public static void LogAlways(string msg, UnityEngine.Object ctx = null) =>
+            InternalLog(LogLevel.Always, msg, ctx);
 
         // ---------- Standard Debug signatures (kept 1‑to‑1) ------------------
 
@@ -155,7 +155,7 @@ namespace Gamenator.Core.Logging
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [HideInCallstack]
         private static bool ShouldLog(LogLevel level) =>
-            level >= CurrentLevel && CurrentLevel != LogLevel.None;
+            level == LogLevel.Always || (level >= CurrentLevel && CurrentLevel != LogLevel.None);
 
         // --------------------- Formatting helpers ----------------------------
 
