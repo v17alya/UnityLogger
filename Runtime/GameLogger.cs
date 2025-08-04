@@ -182,14 +182,28 @@ namespace OnlySpace.Core.Logging
         [HideInCallstack]
         private static Type GetExternalCallerType()
         {
-            var trace = new StackTrace(2, false); // skip InternalLog & Format
+            var trace = new System.Diagnostics.StackTrace(2, false); // skip InternalLog + Format
+
             for (int i = 0; i < trace.FrameCount; i++)
             {
-                var type = trace.GetFrame(i).GetMethod()?.DeclaringType;
-                if (type != null && type != typeof(GameLogger))
-                    return type;
+                var method = trace.GetFrame(i).GetMethod();
+                var type = method?.DeclaringType;
+
+                if (type == null || type == typeof(GameLogger)) continue;   // skip wrapper
+
+                // Walk up through nested, compiler-generated helpers
+                while (IsCompilerGenerated(type) && type.DeclaringType != null)
+                    type = type.DeclaringType;
+
+                return type ?? typeof(GameLogger);
             }
             return typeof(GameLogger);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        private static bool IsCompilerGenerated(Type t) =>
+            t.IsDefined(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), false) ||
+            t.Name.StartsWith("<");         // async/iterator/closure helpers
     }
 }
