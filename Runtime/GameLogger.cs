@@ -8,7 +8,9 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+#if UNITY_EDITOR
 using Gamenator.Core.Logging.Utils;
+#endif
 
 namespace Gamenator.Core.Logging
 {
