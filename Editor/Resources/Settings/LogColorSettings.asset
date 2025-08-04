@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: LogColorSettings
   m_EditorClassIdentifier: 
   Entries:
-  - TypeName: OnlySpace.Core.GameBootstrapper
+  - TypeName: Gamenator.Core.GameBootstrapper
     Colour: {r: 0.91665447, g: 1, b: 0, a: 1}

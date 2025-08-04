@@ -6,13 +6,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OnlySpace.Core.Logging.Settings
+namespace Gamenator.Core.Logging.Settings
 {
     /// <summary>
     /// ScriptableObject mapping fully‑qualified class names to colours.
     /// Kept in Resources so runtime can load it (Editor‑only code strips colours in players).
     /// </summary>
-    [CreateAssetMenu(menuName = "OnlySpace/Logging/Log Colour Settings")]
+    [CreateAssetMenu(menuName = "Gamenator/Logging/Log Colour Settings")]
     public class LogColorSettings : ScriptableObject
     {
         [Serializable]

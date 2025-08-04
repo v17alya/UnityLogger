@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------------
 // GameLogger.cs
-// Namespace : OnlySpace.Core.Logging
+// Namespace : Gamenator.Core.Logging
 // Purpose   : Drop‑in replacement for UnityEngine.Debug with per‑class colours,
 //             runtime log‑level filter, and zero runtime overhead in builds.
 // -----------------------------------------------------------------------------
@@ -8,9 +8,9 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using OnlySpace.Core.Logging.Utils;
+using Gamenator.Core.Logging.Utils;
 
-namespace OnlySpace.Core.Logging
+namespace Gamenator.Core.Logging
 {
     /// <summary>
     /// Static logger meant to replace <see cref="UnityEngine.Debug"/>.

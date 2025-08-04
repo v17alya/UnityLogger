@@ -1,5 +1,5 @@
 // File: LogLevel.cs
-namespace OnlySpace.Core.Logging
+namespace Gamenator.Core.Logging
 {
     /// <summary>Runtime filter for <see cref="GameLogger"/>.</summary>
     public enum LogLevel : int

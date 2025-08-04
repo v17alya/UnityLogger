@@ -6,9 +6,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
-using OnlySpace.Core.Logging.Settings;
+using Gamenator.Core.Logging.Settings;
 
-namespace OnlySpace.Core.Logging.Editor
+namespace Gamenator.Core.Logging.Editor
 {
     /// <summary>Tool window: add/remove class→colour mappings with live search.</summary>
     public class LogColorEditorWindow : EditorWindow

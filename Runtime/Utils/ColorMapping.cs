@@ -4,9 +4,9 @@
 // -----------------------------------------------------------------------------
 using System;
 using UnityEngine;
-using OnlySpace.Core.Logging.Settings;
+using Gamenator.Core.Logging.Settings;
 
-namespace OnlySpace.Core.Logging.Utils
+namespace Gamenator.Core.Logging.Utils
 {
     /// <summary>Internal bridge that gives GameLogger fast access to colour data.</summary>
     public static class ColorMapping
