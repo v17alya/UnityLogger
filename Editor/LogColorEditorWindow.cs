@@ -13,8 +13,6 @@ namespace Gamenator.Core.Logging.Editor
     /// <summary>Tool window: add/remove class→colour mappings with live search.</summary>
     public class LogColorEditorWindow : EditorWindow
     {
-        private const string SettingsPath = "Assets/Core/Editor/Resources/Settings/GameLogger/LogColorSettings.asset";
-
         private LogColorSettings _settings;
         private SearchField _searchField;
         private string _search;
@@ -87,24 +85,35 @@ namespace Gamenator.Core.Logging.Editor
         // --------------------- Settings asset helpers ------------------------
         private static LogColorSettings LoadOrCreateSettings()
         {
-            // ► Update this constant to whatever location ви хочете
-            const string AssetPath = "Assets/Core/Editor/Resources/Settings/GameLogger/LogColorSettings.asset";
+            // Update this path if you prefer another default location
+            const string DefaultAssetPath = "Assets/Editor/Resources/GameLogger/Settings/LogColorSettings.asset";
 
-            // ── already present? ────────────────────────────────────────────────────
-            var settings = AssetDatabase.LoadAssetAtPath<LogColorSettings>(AssetPath);
-            if (settings) return settings;
+            // ── 1️⃣ Search entire project for an existing asset ───────────────────
+            string[] guids = AssetDatabase.FindAssets("t:LogColorSettings");
+            if (guids.Length > 0)
+            {
+                string foundPath = AssetDatabase.GUIDToAssetPath(guids[0]);
+                var existing = AssetDatabase.LoadAssetAtPath<LogColorSettings>(foundPath);
+                if (existing)
+                {
+                    Debug.Log($"<color=green>[LogColours]</color> Found existing settings at {foundPath}");
+                    return existing;
+                }
+            }
 
-            // ── create missing folders recursively ─────────────────────────────────
-            string dir = System.IO.Path.GetDirectoryName(AssetPath);
+            // ── 2️⃣ If not found, create at the default path ──────────────────────
+            // Ensure folder chain exists (recursive)
+            string dir = System.IO.Path.GetDirectoryName(DefaultAssetPath);
             CreateFoldersIfNeeded(dir);
 
-            // ── create new asset ───────────────────────────────────────────────────
-            settings = ScriptableObject.CreateInstance<LogColorSettings>();
-            AssetDatabase.CreateAsset(settings, AssetPath);
+            var settings = ScriptableObject.CreateInstance<LogColorSettings>();
+            AssetDatabase.CreateAsset(settings, DefaultAssetPath);
             AssetDatabase.SaveAssets();
-            Debug.Log($"<color=yellow>[LogColours]</color> Created new settings asset at {AssetPath}");
+
+            Debug.Log($"<color=yellow>[LogColours]</color> Created new settings asset at {DefaultAssetPath}");
             return settings;
         }
+
 
         /// <summary>
         /// Recursively creates any missing folder in a Unity‑safe way
