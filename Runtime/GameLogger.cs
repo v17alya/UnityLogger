@@ -35,6 +35,13 @@ namespace Gamenator.Core.Logging
             false;
 #endif
 
+        /// <summary>
+        /// Controls whether the logger resolves the external caller type via stack walking.
+        /// When disabled, messages will not include the calling type name and colour mapping is skipped.
+        /// Default: true.
+        /// </summary>
+        public static bool EnableCallerTypeResolution { get; set; } = true;
+
         /// <summary>Adjusts log level at runtime (e.g. when changing build mode).</summary>
         public static void SetLogLevel(LogLevel level) => CurrentLevel = level;
 
@@ -103,7 +110,7 @@ namespace Gamenator.Core.Logging
         {
 #if UNITY_EDITOR
             if (EnableEditorLogging)
-                UnityEngine.Debug.Log(message);
+                InternalLog(LogLevel.Information, message?.ToString());
 #endif
         }
 
@@ -114,7 +121,7 @@ namespace Gamenator.Core.Logging
         {
 #if UNITY_EDITOR
             if (EnableEditorLogging)
-                UnityEngine.Debug.Log(message, context);
+                InternalLog(LogLevel.Information, message?.ToString(), context);
 #endif
         }
 
@@ -125,7 +132,7 @@ namespace Gamenator.Core.Logging
         {
 #if UNITY_EDITOR
             if (EnableEditorLogging)
-                UnityEngine.Debug.LogWarning(message);
+                InternalLog(LogLevel.Warning, message?.ToString());
 #endif
         }
 
@@ -136,7 +143,7 @@ namespace Gamenator.Core.Logging
         {
 #if UNITY_EDITOR
             if (EnableEditorLogging)
-                UnityEngine.Debug.LogWarning(message, context);
+                InternalLog(LogLevel.Warning, message?.ToString(), context);
 #endif
         }
 
@@ -147,7 +154,7 @@ namespace Gamenator.Core.Logging
         {
 #if UNITY_EDITOR
             if (EnableEditorLogging)
-                UnityEngine.Debug.LogError(message);
+                InternalLog(LogLevel.Error, message?.ToString());
 #endif
         }
 
@@ -158,7 +165,7 @@ namespace Gamenator.Core.Logging
         {
 #if UNITY_EDITOR
             if (EnableEditorLogging)
-                UnityEngine.Debug.LogError(message, context);
+                InternalLog(LogLevel.Error, message?.ToString(), context);
 #endif
         }
 
@@ -169,7 +176,7 @@ namespace Gamenator.Core.Logging
         {
 #if UNITY_EDITOR
             if (EnableEditorLogging)
-                UnityEngine.Debug.LogException(exception, context);
+                InternalLog(LogLevel.Exception, exception?.ToString(), context);
 #endif
         }
 
@@ -181,7 +188,7 @@ namespace Gamenator.Core.Logging
         {
 #if UNITY_EDITOR
             if (EnableEditorLogging)
-                UnityEngine.Debug.Log(supplier());
+                InternalLog(LogLevel.Information, supplier, null);
 #endif
         }
 
@@ -192,7 +199,7 @@ namespace Gamenator.Core.Logging
         {
 #if UNITY_EDITOR
             if (EnableEditorLogging)
-                UnityEngine.Debug.LogWarning(supplier());
+                InternalLog(LogLevel.Warning, supplier, null);
 #endif
         }
 
@@ -203,7 +210,7 @@ namespace Gamenator.Core.Logging
         {
 #if UNITY_EDITOR
             if (EnableEditorLogging)
-                UnityEngine.Debug.LogError(supplier());
+                InternalLog(LogLevel.Error, supplier, null);
 #endif
         }
 
@@ -263,11 +270,11 @@ namespace Gamenator.Core.Logging
         [HideInCallstack]
         private static string Format(string raw, LogLevel level)
         {
-            Type caller = GetExternalCallerType();
-            string prefix = $"[{caller.Name}]"; // class name always, even in prod
+            Type caller = EnableCallerTypeResolution ? GetExternalCallerType() : null;
+            string prefix = caller != null ? $"[{caller.Name}]" : "[Log]"; // class name when enabled; generic tag otherwise
 #if UNITY_EDITOR
             // colouring only inside the Editor (never included in player builds)
-            if (ColorMapping.TryGetColour(caller, out var html))
+            if (caller != null && ColorMapping.TryGetColour(caller, out var html))
             {
                 // Colour only the first line (prefix) → preview line is coloured, error/warn stay default
                 return $"<color=#{html}>{prefix}</color> {raw}";
