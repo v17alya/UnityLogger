@@ -27,6 +27,14 @@ namespace Gamenator.Core.Logging
         /// <summary>Current runtime filter. Anything below this level is ignored (except Fatal).</summary>
         public static LogLevel CurrentLevel { get; private set; } = LogLevel.All;
 
+        /// <summary>Controls whether editor-only logging methods are active. Default: true in editor, false in builds.</summary>
+        public static bool EnableEditorLogging { get; set; } =
+#if UNITY_EDITOR
+            true;
+#else
+            false;
+#endif
+
         /// <summary>Adjusts log level at runtime (e.g. when changing build mode).</summary>
         public static void SetLogLevel(LogLevel level) => CurrentLevel = level;
 
@@ -85,6 +93,119 @@ namespace Gamenator.Core.Logging
         [HideInCallstack]
         public static void LogError(Func<string> supplier) =>
             InternalLog(LogLevel.Error, supplier, null);
+
+        // ---------- Editor-only logging methods ------------------
+
+        /// <summary>Logs message only when EnableEditorLogging is true. No-op in builds by default.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        public static void LogEditor(object message)
+        {
+#if UNITY_EDITOR
+            if (EnableEditorLogging)
+                UnityEngine.Debug.Log(message);
+#endif
+        }
+
+        /// <summary>Logs message with context only when EnableEditorLogging is true. No-op in builds by default.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        public static void LogEditor(object message, UnityEngine.Object context)
+        {
+#if UNITY_EDITOR
+            if (EnableEditorLogging)
+                UnityEngine.Debug.Log(message, context);
+#endif
+        }
+
+        /// <summary>Logs warning only when EnableEditorLogging is true. No-op in builds by default.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        public static void LogWarningEditor(object message)
+        {
+#if UNITY_EDITOR
+            if (EnableEditorLogging)
+                UnityEngine.Debug.LogWarning(message);
+#endif
+        }
+
+        /// <summary>Logs warning with context only when EnableEditorLogging is true. No-op in builds by default.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        public static void LogWarningEditor(object message, UnityEngine.Object context)
+        {
+#if UNITY_EDITOR
+            if (EnableEditorLogging)
+                UnityEngine.Debug.LogWarning(message, context);
+#endif
+        }
+
+        /// <summary>Logs error only when EnableEditorLogging is true. No-op in builds by default.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        public static void LogErrorEditor(object message)
+        {
+#if UNITY_EDITOR
+            if (EnableEditorLogging)
+                UnityEngine.Debug.LogError(message);
+#endif
+        }
+
+        /// <summary>Logs error with context only when EnableEditorLogging is true. No-op in builds by default.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        public static void LogErrorEditor(object message, UnityEngine.Object context)
+        {
+#if UNITY_EDITOR
+            if (EnableEditorLogging)
+                UnityEngine.Debug.LogError(message, context);
+#endif
+        }
+
+        /// <summary>Logs exception only when EnableEditorLogging is true. No-op in builds by default.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        public static void LogExceptionEditor(Exception exception, UnityEngine.Object context = null)
+        {
+#if UNITY_EDITOR
+            if (EnableEditorLogging)
+                UnityEngine.Debug.LogException(exception, context);
+#endif
+        }
+
+        // Lazy-evaluation overloads for editor-only logging
+        /// <summary>Logs message only when EnableEditorLogging is true using lazy evaluation. No-op in builds by default.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        public static void LogEditor(Func<string> supplier)
+        {
+#if UNITY_EDITOR
+            if (EnableEditorLogging)
+                UnityEngine.Debug.Log(supplier());
+#endif
+        }
+
+        /// <summary>Logs warning only when EnableEditorLogging is true using lazy evaluation. No-op in builds by default.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        public static void LogWarningEditor(Func<string> supplier)
+        {
+#if UNITY_EDITOR
+            if (EnableEditorLogging)
+                UnityEngine.Debug.LogWarning(supplier());
+#endif
+        }
+
+        /// <summary>Logs error only when EnableEditorLogging is true using lazy evaluation. No-op in builds by default.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [HideInCallstack]
+        public static void LogErrorEditor(Func<string> supplier)
+        {
+#if UNITY_EDITOR
+            if (EnableEditorLogging)
+                UnityEngine.Debug.LogError(supplier());
+#endif
+        }
 
         // ---------------------------------------------------------------------
         // Internal implementation
