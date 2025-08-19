@@ -220,7 +220,6 @@ namespace Gamenator.Core.Logging
         [HideInCallstack]
         private static void InternalLog(LogLevel level, string text, UnityEngine.Object ctx = null)
         {
-#if UNITY_EDITOR
             // Abort early if this level is filtered out
             if (!ShouldLog(level)) return;
 
@@ -244,27 +243,6 @@ namespace Gamenator.Core.Logging
                     UnityEngine.Debug.Log(message, ctx);
                     break;
             }
-
-#else
-            // ---------------- Player build path (fastest possible) ----------------
-            if (!ShouldLog(level)) return;
-
-            switch (level)
-            {
-                case LogLevel.Warning:
-                    UnityEngine.Debug.LogWarning(text, ctx);
-                    break;
-
-                case LogLevel.Error:
-                case LogLevel.Exception:
-                    UnityEngine.Debug.LogError(text, ctx);
-                    break;
-
-                default:
-                    UnityEngine.Debug.Log(text, ctx);
-                    break;
-            }
-#endif
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
